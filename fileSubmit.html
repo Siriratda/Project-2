@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Google Sheets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* styles.css */
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background-color: #fff;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: #004080; /* สีน้ำเงินเข้ม */
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e91e63; /* สีชมพูเมื่อโฮเวอร์ */
+        }
+
+        .signin-btn {
+            background-color: #e91e63; /* สีชมพู */
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .signin-btn:hover {
+            background-color: #c2185b; /* สีชมพูเข้มเมื่อโฮเวอร์ */
+        }
+
+        .header-bottom-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #e91e63; /* สีชมพู */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 40px;
+        }
+
+        h1 {
+            color: #004080; /* สีน้ำเงินเข้ม */
+            margin-bottom: 30px;
+            font-weight: 500;
+            font-size: 28px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        input[type="text"], input[type="email"], input[type="labid"], textarea {
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="labid"]:focus, textarea:focus {
+            border-color: #e91e63; /* สีชมพูเมื่อโฟกัส */
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        label {
+            align-self: flex-start;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        button[type="submit"] {
+            background-color: #e91e63; /* สีชมพู */
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c2185b; /* สีชมพูเข้มเมื่อโฮเวอร์ */
+        }
+
+        .alert {
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 6px;
+            display: none;
+            font-size: 14px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h2>SIET KMITL</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#"> การสอบเก็บคะแนน 20 มีนาคม 2568</a></li>
+            </ul>
+        </nav>
+        <div class="header-bottom-bar"></div> <!-- แถบสีชมพูอยู่ใต้ Navbar -->
+    </header>
+
+    <div class="container">
+        <h1>ผลการประเมิน</h1>
+        <form id="dataForm">
+            <input type="text" id="name" name="name" placeholder="ชื่อ - นามสกุล" required>
+            <input type="text" id="student" name="email" placeholder="รหัสนักศึกษา" required>
+            <input type="labid" id="labid" name="labid" placeholder="ชื่อ Lab" required>
+            <textarea id="score" name="score" placeholder="คะแนนที่ได้ (% Complete)" required></textarea>
+            <label for="img">Select image:</label>
+            <input type="file" id="img" name="img" accept="image/*" required>
+            <img src="" alt="">        
+            <button type="submit">Submit</button>
+        </form>
+        <div id="alert" class="alert"></div>
+    </div>
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // ตรวจสอบว่าเคยส่งข้อมูลไปแล้วหรือยัง
+        // if (sessionStorage.getItem('formSubmitted') === 'true') {
+        //         showAlert('คุณได้ส่งข้อมูลแล้วในครั้งนี้', 'error');
+        //         return;  // ไม่ให้ส่งข้อมูลซ้ำ
+        //     }
+
+        const name = document.getElementById('name').value;
+        const student = document.getElementById('student').value;
+        const lab = document.getElementById('labid').value;
+        const score = document.getElementById('score').value;
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzyLaz9iR8sMPYl2jLRfeRhmnvJCaHbO_ZKABeavfr1634qnkMS_5MeGYwfhwZihv-emA/exec'; // แทนที่ด้วย URL ของ Google Apps Script
+
+        // สร้าง callback function สำหรับ JSONP
+        const callbackName = 'handleResponse';
+        window[callbackName] = function(response) {
+            if (response.result === 'success') {
+                showAlert('Data submitted successfully!', 'success');
+                sessionStorage.setItem('formSubmitted', 'true');  // ตั้งค่าสถานะว่าได้ส่งข้อมูลแล้ว
+                document.getElementById('dataForm').reset();
+            } else {
+                showAlert('Failed to submit data.', 'error');
+            }
+            // ลบ callback function หลังจากใช้งานเสร็จ
+            delete window[callbackName];
+        };
+
+        // สร้าง <script> แท็กเพื่อส่งคำขอ JSONP
+        const script = document.createElement('script');
+        script.src = `${scriptURL}?callback=${callbackName}&name=${encodeURIComponent(name)}&student=${encodeURIComponent(student)}&lab=${encodeURIComponent(lab)}&score=${encodeURIComponent(score)}`;
+        document.body.appendChild(script);
+
+        // ลบ <script> แท็กหลังจากใช้งานเสร็จ
+        script.onload = function() {
+            document.body.removeChild(script);
+        };
+    });
+
+    function showAlert(message, type) {
+        const alertDiv = document.getElementById('alert');
+        alertDiv.textContent = message;
+        alertDiv.className = `alert ${type}`;
+        alertDiv.style.display = 'block';
+
+        setTimeout(() => {
+            alertDiv.style.display = 'none';
+        }, 3000);
+    }
+
+        let url = "https://script.google.com/macros/s/AKfycbzVFp_baS3NTiG9Gqus-kjHa8mozWcCvnjA4fIuOGZMnNgKlB7Gp3vi7VDI4hiYn5G8zA/exec";
+        let file = document.getElementById("img")
+        let img = document.querySelector("img")
+        
+    file.addEventListener('change', ()=>{   
+        let labid = document.getElementById('labid').value;
+        let student = document.getElementById('student').value;
+            if (file.files && file.files[0]) {
+                let fr = new FileReader();
+                fr.addEventListener('loadend', ()=>{ // แก้ไขจาก 'loaded' เป็น 'loadend'
+                    let res = fr.result;
+                    img.src = res;
+                    let spt = res.split("base64,")[1];
+                    // console.log(res);
+                    // console.log(spt);
+                    let obj = {
+                        base64:spt,
+                        type:file.files[0].type,
+                        name:file.files[0].name
+                    }
+                    fetch(`${url}?lab=${encodeURIComponent(labid)}&student=${encodeURIComponent(student)}`, {
+                        method: "POST",
+                        body:JSON.stringify(obj)
+                    })
+                    .then(r=> r.text())
+                    .then(data=>console.log(data))
+
+                })
+                fr.readAsDataURL(file.files[0])
+            } else {
+                console.error("No file selected or file is not a Blob.");
+            }
+        })
+    </script>
+</body>
+</html>
